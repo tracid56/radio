@@ -2,10 +2,10 @@ ESX = nil
 
 -- TODO: Copied from TokoVoip config currently. Make it dynamic.
 Channels = {
-  {name = "Police Channel 1", job = "police" },
-  {name = "Police Channel 2", job = "police" },
-  {name = "EMS Channel 1", job = "ambulance"},
-  {name = "EMS Channel 2", job = "ambulance"},
+  {name = "Police Channel 1"},
+  {name = "Police Channel 2"},
+  {name = "EMS Channel 1"},
+  {name = "EMS Channel 2"},
 }
 
 local mainMenu         = nil
@@ -26,7 +26,7 @@ function InitMenu()
   local state  = {"Off", "On"}
 
   for k, v in pairs(Channels) do
-    if (playerData.job.name == v.job) then
+    if (playerData.job.name == "police" or playerData.job.name == "ambulance") then
       menuItems[k] = NativeUI.CreateListItem(v.name, state, 0)
       mainMenu:AddItem(menuItems[k])
     end
@@ -73,7 +73,7 @@ Citizen.CreateThread(function()
 
         if menuPool ~= nil then
           menuPool:ProcessMenus()
-          if IsControlJustPressed(1, 39) then
+          if IsControlPressed(0, 21) and IsControlJustPressed(0, 288) then -- shift + f1
               mainMenu:Visible(not mainMenu:Visible())
           end
         end
