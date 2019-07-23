@@ -9,6 +9,17 @@ main {
     width: 17em;
 }
 
+#display {
+    background-color: #c8c9c8;
+    bottom: 26.25%;
+    color: #232428;
+    height: 2.5em;
+    left: 23%;
+    position: absolute;
+    width: 8em;
+}
+
 #radio-frame {
     width: 100%;
+    z-index: -1;
 }
