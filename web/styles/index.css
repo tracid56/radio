@@ -3,10 +3,11 @@ body {
 }
 
 main {
-    bottom: 10%;
+    bottom: 7%;
+    display: none;
     position: absolute;
-    left: 10%;
-    width: 17em;
+    right: 5%;
+    width: 20em;
 }
 
 #display {

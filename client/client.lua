@@ -8,6 +8,7 @@ Channels = {
   {name = "EMS Channel 2"},
 }
 
+local isRadioShowing   = false
 local mainMenu         = nil
 local menuPool         = nil
 local menuItems        = {}
@@ -49,6 +50,11 @@ function InitMenu()
   end 
 end
 
+function ToggleRadio()
+  isRadioShowing = not isRadioShowing;
+  SendNUIMessage({type = "pixelated.radio", display = isRadioShowing})
+end
+
 Citizen.CreateThread(function()
   while ESX == nil do
     TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -74,7 +80,8 @@ Citizen.CreateThread(function()
         if menuPool ~= nil then
           menuPool:ProcessMenus()
           if IsControlPressed(0, 21) and IsControlJustPressed(0, 288) then -- shift + f1
-              mainMenu:Visible(not mainMenu:Visible())
+              --mainMenu:Visible(not mainMenu:Visible())
+              ToggleRadio()
           end
         end
     end
