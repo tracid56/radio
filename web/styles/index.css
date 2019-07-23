@@ -1,0 +1,14 @@
+body {
+    background-color: transparent;
+}
+
+main {
+    bottom: 10%;
+    position: absolute;
+    left: 10%;
+    width: 17em;
+}
+
+#radio-frame {
+    width: 100%;
+}
