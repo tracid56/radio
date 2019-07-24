@@ -9,8 +9,13 @@ $(function() {
 
             if (item.display) {
                 $("#radio").show();
-            } else if (!item.display) {
+            } else if (item.display === false) {
                 $("#radio").hide();
+            }
+
+            console.log(item.text)
+            if (item.text !== undefined && item.text.length > 0) {
+                $("#display h1").text(item.text)
             }
         });
     }

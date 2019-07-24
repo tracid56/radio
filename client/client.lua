@@ -9,6 +9,7 @@ Channels = {
 }
 
 local isRadioShowing   = false
+local currentIndex     = 0;
 local mainMenu         = nil
 local menuPool         = nil
 local menuItems        = {}
@@ -51,8 +52,40 @@ function InitMenu()
 end
 
 function ToggleRadio()
+  Citizen.Trace("Toggle radio\n")
   isRadioShowing = not isRadioShowing;
   SendNUIMessage({type = "pixelated.radio", display = isRadioShowing})
+
+  if (isRadioShowing) then
+    Citizen.CreateThread(function()
+      while (isRadioShowing) do
+        Citizen.Wait(5)
+
+        local newIndex = currentIndex
+        local text
+
+        if (IsControlJustPressed(0, 174)) then
+          newIndex = math.max(currentIndex - 1, 0)
+        elseif (IsControlJustPressed(0, 175)) then
+          newIndex = math.min(currentIndex + 1, #Channels)
+        end
+
+        if (newIndex ~= currentIndex) then
+          if (newIndex == 0) then
+            text = "Off"
+            exports.tokovoip_script:removePlayerFromRadio(currentIndex)
+          else
+            text = Channels[newIndex].name
+            exports.tokovoip_script:removePlayerFromRadio(currentIndex)
+            exports.tokovoip_script:addPlayerToRadio(newIndex)
+          end
+
+          currentIndex = newIndex
+          SendNUIMessage({type = "pixelated.radio", text = text})
+        end
+      end
+    end)
+  end
 end
 
 Citizen.CreateThread(function()
