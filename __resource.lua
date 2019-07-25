@@ -12,7 +12,8 @@ files {
   "web/img/radio.png",
   "web/scripts/listener.js",
   "web/styles/index.css",
-  "web/styles/reset.css"
+  "web/styles/reset.css",
+  "web/styles/MotorolaScreentype.woff"
 }
 
 dependencies {

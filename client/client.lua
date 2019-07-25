@@ -42,7 +42,6 @@ end
 
 function GetPreviousChannel()
   for i = currentChannel["id"] - 1, 1, -1 do
-    Citizen.Trace("checking " .. Channels[i]["name"] .. "\n")
     if (CanUseChannel(Channels[i])) then
       return Channels[i]
     end
@@ -81,6 +80,7 @@ function ToggleRadio()
 
           currentChannel = newChannel
           SendNUIMessage({type = "pixelated.radio", text = newChannel["name"]})
+          PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
         end
       end
     end)
