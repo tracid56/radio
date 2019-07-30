@@ -72,7 +72,7 @@ function ToggleRadio()
         if (newChannel ~= nil and newChannel ~= currentChannel) then
           Unsubscribe()
 
-          if (currentChannel["id"] ~= 1) then 
+          if (newChannel["id"] ~= 1) then 
             exports.tokovoip_script:addPlayerToRadio(newChannel["id"] - 1)
           end
 
@@ -87,9 +87,9 @@ function ToggleRadio()
 end
 
 function Unsubscribe()
-  for i = currentChannel["id"] + 1, #Channels do
-    if (exports.tokovoip_script:isPlayerInChannel(currentChannel["id"])) then
-      exports.tokovoip_script:removePlayerFromRadio(currentChannel["id"])
+  for i = 2, #Channels do
+    if (exports.tokovoip_script:isPlayerInChannel(Channels[i].id - 1)) then
+      exports.tokovoip_script:removePlayerFromRadio(Channels[i].id - 1)
     end
   end
 end
@@ -102,12 +102,14 @@ end)
 Citizen.CreateThread(function()
   while ESX == nil do
     TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-    Citizen.Wait(0)
+    Citizen.Wait(5)
   end
 
-  ESX.TriggerServerCallback('esx:getPlayerData', function(data)
-    playerData = data
-  end)
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+	playerData = ESX.GetPlayerData()
 end)
 
 RegisterNetEvent('esx:setJob')
