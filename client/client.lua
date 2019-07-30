@@ -3,10 +3,10 @@ ESX = nil
 -- TODO: Copied from TokoVoip config currently. Make it dynamic.
 Channels = {
   {id = 1, name = "Off", jobs = {}},
-  {id = 2, name = "Police Channel 1", jobs = {"police", "ambulance"}},
-  {id = 3, name = "Police Channel 2", jobs = {"police", "ambulance"}},
-  {id = 4, name = "EMS Channel 1", jobs = {"police", "ambulance"}},
-  {id = 5, name = "EMS Channel 2", jobs = {"police", "ambulance"}},
+  {id = 2, name = "Police Channel 1", jobs = {"offambulance", "offpolice", "police", "ambulance"}},
+  {id = 3, name = "Police Channel 2", jobs = {"offambulance", "offpolice", "police", "ambulance"}},
+  {id = 4, name = "EMS Channel 1", jobs = {"offambulance", "offpolice", "police", "ambulance"}},
+  {id = 5, name = "EMS Channel 2", jobs = {"offambulance", "offpolice", "police", "ambulance"}},
   {id = 6, name = "CB Channel 1", jobs = {}},
   {id = 7, name = "CB Channel 2", jobs = {}},
   {id = 8, name = "CB Channel 3", jobs = {}},
