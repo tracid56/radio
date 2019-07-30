@@ -70,15 +70,14 @@ function ToggleRadio()
         end
 
         if (newChannel ~= nil and newChannel ~= currentChannel) then
-          if (newChannel["id"] == 1) then
-            -- Subtract 1 because Lua is 1-based instead of 0-based and I forgot that like a dumbass
-            exports.tokovoip_script:removePlayerFromRadio(currentChannel["id"] - 1)
-          else
-            if (currentChannel["id"] ~= 1) then exports.tokovoip_script:removePlayerFromRadio(currentChannel["id"] - 1) end
+          Unsubscribe()
+
+          if (currentChannel["id"] ~= 1) then 
             exports.tokovoip_script:addPlayerToRadio(newChannel["id"] - 1)
           end
 
           currentChannel = newChannel
+
           SendNUIMessage({type = "pixelated.radio", text = newChannel["name"]})
           PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
         end
@@ -86,6 +85,19 @@ function ToggleRadio()
     end)
   end
 end
+
+function Unsubscribe()
+  for i = currentChannel["id"] + 1, #Channels do
+    if (exports.tokovoip_script:isPlayerInChannel(currentChannel["id"])) then
+      exports.tokovoip_script:removePlayerFromRadio(currentChannel["id"])
+    end
+  end
+end
+
+AddEventHandler('onClientResourceStart', function (resourceName)
+  if(GetCurrentResourceName() ~= resourceName) then return end
+  Unsubscribe()
+end)
 
 Citizen.CreateThread(function()
   while ESX == nil do
