@@ -70,7 +70,9 @@ function ToggleRadio()
         end
 
         if (newChannel ~= nil and newChannel ~= currentChannel) then
-          Unsubscribe()
+          if (currentChannel["id"] ~= 1) then
+            exports.tokovoip_script:removePlayerFromRadio(currentChannel["id"] - 1)
+          end
 
           if (newChannel["id"] ~= 1) then 
             exports.tokovoip_script:addPlayerToRadio(newChannel["id"] - 1)
@@ -95,6 +97,11 @@ function Unsubscribe()
 end
 
 AddEventHandler('onClientResourceStart', function (resourceName)
+  if(GetCurrentResourceName() ~= resourceName) then return end
+  Unsubscribe()
+end)
+
+AddEventHandler('onClientResourceStop', function (resourceName)
   if(GetCurrentResourceName() ~= resourceName) then return end
   Unsubscribe()
 end)
