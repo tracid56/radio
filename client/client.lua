@@ -70,15 +70,13 @@ function ToggleRadio()
         end
 
         if (newChannel ~= nil and newChannel ~= currentChannel) then
-          if (currentChannel["id"] ~= 1) then
-            exports.tokovoip_script:removePlayerFromRadio(currentChannel["id"] - 1)
-          end
-
           if (newChannel["id"] ~= 1) then 
             exports.tokovoip_script:addPlayerToRadio(newChannel["id"] - 1)
           end
 
           currentChannel = newChannel
+
+          Unsubscribe()
 
           SendNUIMessage({type = "pixelated.radio", text = newChannel["name"]})
           PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
@@ -88,22 +86,26 @@ function ToggleRadio()
   end
 end
 
-function Unsubscribe()
+function Unsubscribe(all)
+  all = all or false
+
   for i = 2, #Channels do
-    if (exports.tokovoip_script:isPlayerInChannel(Channels[i].id - 1)) then
-      exports.tokovoip_script:removePlayerFromRadio(Channels[i].id - 1)
+    if (all or currentChannel ~= Channels[i]) then 
+      if (exports.tokovoip_script:isPlayerInChannel(Channels[i].id - 1)) then
+        exports.tokovoip_script:removePlayerFromRadio(Channels[i].id - 1)
+      end
     end
   end
 end
 
 AddEventHandler('onClientResourceStart', function (resourceName)
   if(GetCurrentResourceName() ~= resourceName) then return end
-  Unsubscribe()
+  Unsubscribe(true)
 end)
 
 AddEventHandler('onClientResourceStop', function (resourceName)
   if(GetCurrentResourceName() ~= resourceName) then return end
-  Unsubscribe()
+  Unsubscribe(true)
 end)
 
 Citizen.CreateThread(function()
@@ -132,4 +134,10 @@ Citizen.CreateThread(function()
           ToggleRadio()
       end
     end
+end)
+
+-- Periodically clean up radio subscriptions
+Citizen.CreateThread(function()
+  Citizen.Wait(30000)
+  Unsubscribe()
 end)
